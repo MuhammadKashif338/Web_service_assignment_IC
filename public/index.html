@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Web Services</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h1>Simple Web Services</h1>
+    <form id="palindromeForm">
+        <h2>Palindrome Checker Service</h2>
+        <input type="text" id="palindromeInput" placeholder="Enter a string" required>
+        <button type="submit">Check Palindrome</button>
+    </form>
+    <p id="palindromeResult"></p>
+
+    <form id="fibonacciForm">
+        <h2>Fibonacci Sequence Service</h2>
+        <input type="number" id="fibonacciInput" placeholder="Enter a number" required>
+        <button type="submit">Get Fibonacci Sequence</button>
+    </form>
+    <p id="fibonacciResult"></p>
+
+    <script>
+        // Palindrome Checker Service
+        document.getElementById('palindromeForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const input = document.getElementById('palindromeInput').value;
+            const response = await fetch('/api/palindrome', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ text: input })
+            });
+            const data = await response.json();
+            document.getElementById('palindromeResult').textContent = data.result;
+        });
+
+        // Fibonacci Sequence Service
+        document.getElementById('fibonacciForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const input = document.getElementById('fibonacciInput').value;
+            const response = await fetch('/api/fibonacci', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ number: Number(input) })
+            });
+            const data = await response.json();
+            document.getElementById('fibonacciResult').textContent = `Fibonacci Sequence: ${data.result.join(', ')}`;
+        });
+    </script>
+</body>
+</html>
